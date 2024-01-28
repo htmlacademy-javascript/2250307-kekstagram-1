@@ -1,5 +1,2 @@
 import './functions.js';
-import {createPhotos} from './data.js';
-
-// eslint-disable-next-line no-console
-console.log(createPhotos());
+import './thumbnails.js';
