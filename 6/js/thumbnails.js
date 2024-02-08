@@ -1,9 +1,9 @@
-import {openFullSizePhoto} from './fullSizePhoto.js';
+import {openFullSizePhoto} from './full-size-photo.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
 
-function renderThumbnails(photos) {
+const renderThumbnails = (photos) => {
   const fragment = document.createDocumentFragment();
 
   photos.forEach(({id, url, description, likes, comments}) => {
@@ -23,9 +23,9 @@ function renderThumbnails(photos) {
   });
 
   pictureContainer.appendChild(fragment);
-}
+};
 
-function clickThumbnails(photos) {
+const setThumbnailsListener = (photos) => {
   pictureContainer.addEventListener('click', (evt) => {
     const clickedThumbnail = evt.target.closest('[data-thumbnail-id]');
     if(!clickedThumbnail) {
@@ -37,6 +37,6 @@ function clickThumbnails(photos) {
 
     openFullSizePhoto(photo);
   });
-}
+};
 
-export {renderThumbnails, clickThumbnails};
+export {renderThumbnails, setThumbnailsListener};
