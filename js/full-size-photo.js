@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {showComments} from './fullSizeComments.js';
+import {renderComments} from './comments.js';
 
 const bodyContainer = document.body;
 const fullSizePhotoContainer = document.querySelector('.big-picture');
@@ -23,7 +23,7 @@ const onDocumentKeyDown = (evt) => {
   }
 };
 
-function openFullSizePhoto(photo) {
+const openFullSizePhoto = (photo) => {
   bodyContainer.classList.add('modal-open');
   fullSizePhotoContainer.classList.remove('hidden');
 
@@ -32,10 +32,10 @@ function openFullSizePhoto(photo) {
   likesAmount.textContent = photo.likes;
   commentsAmount.textContent = photo.comments.length;
   descriptionText.textContent = photo.description;
-  showComments(photo);
+  renderComments(photo.comments);
 
   document.addEventListener('keydown', onDocumentKeyDown);
-}
+};
 
 function closeFullSizePhoto() {
   bodyContainer.classList.remove('modal-open');

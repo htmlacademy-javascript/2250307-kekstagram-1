@@ -1,23 +1,23 @@
 const commentsContainer = document.querySelector('.social__comments');
 const commentTemplate = commentsContainer.querySelector('.social__comment');
 
-function showComments(photo) {
+const renderComments = (comments) => {
   const fragment = document.createDocumentFragment();
   commentsContainer.innerHTML = '';
 
-  photo.comments.forEach(({avatar, username, message}) => {
+  comments.forEach((element) => {
     const comment = commentTemplate.cloneNode(true);
     const commentPicture = comment.querySelector('.social__picture');
     const commentText = comment.querySelector('.social__text');
 
-    commentPicture.src = avatar;
-    commentPicture.alt = username;
-    commentText.textContent = message;
+    commentPicture.src = element.avatar;
+    commentPicture.alt = element.name;
+    commentText.textContent = element.message;
 
     fragment.appendChild(comment);
   });
 
   commentsContainer.appendChild(fragment);
-}
+};
 
-export {showComments};
+export {renderComments};
