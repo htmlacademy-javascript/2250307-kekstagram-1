@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {renderComments} from './comments.js';
+import {renderComments, resetRenderedCommentsAmount} from './comments.js';
 
 const bodyContainer = document.body;
 const fullSizePhotoContainer = document.querySelector('.big-picture');
@@ -14,8 +14,8 @@ const descriptionText = document.querySelector('.social__caption');
 
 const closeButton = document.querySelector('.big-picture__cancel');
 
-displayedCommentsAmount.classList.add('hidden'); // Временное скрытие по заданию
-commentsLoadButton.classList.add('hidden'); // Временное скрытие по заданию
+// displayedCommentsAmount.classList.add('hidden'); // Временное скрытие по заданию
+// commentsLoadButton.classList.add('hidden'); // Временное скрытие по заданию
 
 const onDocumentKeyDown = (evt) => {
   if(isEscapeKey(evt)) {
@@ -35,6 +35,11 @@ const openFullSizePhoto = (photo) => {
   renderComments(photo.comments);
 
   document.addEventListener('keydown', onDocumentKeyDown);
+
+  commentsLoadButton.addEventListener('click', () => {
+    console.log('clicked more');
+    renderComments(photo.comments);
+  });
 };
 
 function closeFullSizePhoto() {
@@ -42,6 +47,8 @@ function closeFullSizePhoto() {
   fullSizePhotoContainer.classList.add('hidden');
 
   document.removeEventListener('keydown', onDocumentKeyDown);
+
+  resetRenderedCommentsAmount();
 }
 
 closeButton.addEventListener('click', () =>{
