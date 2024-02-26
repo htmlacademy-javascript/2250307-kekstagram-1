@@ -39,5 +39,4 @@ const setThumbnailsListener = (photos) => {
   });
 };
 
-
 export {renderThumbnails, setThumbnailsListener};
