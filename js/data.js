@@ -36,7 +36,7 @@ const PHOTOS_AMOUNT = 25;
 
 const CommentAmountRange = {
   MIN: 1,
-  MAX: 5,
+  MAX: 14,
 };
 
 const CommentIdRange = {
