@@ -1,10 +1,9 @@
 import {isEscapeKey} from './util.js';
-import {renderComments, resetRenderedCommentsAmount} from './comments.js';
+import {renderComments, resetComments} from './comments.js';
 
 const bodyContainer = document.body;
 const fullSizePhotoContainer = document.querySelector('.big-picture');
 
-const displayedCommentsAmount = document.querySelector('.social__comment-count');
 const commentsLoadButton = document.querySelector('.comments-loader');
 
 const fullSizePhoto = document.querySelector('.big-picture__img').querySelector('img');
@@ -14,8 +13,9 @@ const descriptionText = document.querySelector('.social__caption');
 
 const closeButton = document.querySelector('.big-picture__cancel');
 
-// displayedCommentsAmount.classList.add('hidden'); // Временное скрытие по заданию
-// commentsLoadButton.classList.add('hidden'); // Временное скрытие по заданию
+const COMMENTS_LOAD_STEP = 5;
+let renderedCommentsAmount = COMMENTS_LOAD_STEP;
+let currentComments = [];
 
 const onDocumentKeyDown = (evt) => {
   if(isEscapeKey(evt)) {
@@ -32,24 +32,28 @@ const openFullSizePhoto = (photo) => {
   likesAmount.textContent = photo.likes;
   commentsAmount.textContent = photo.comments.length;
   descriptionText.textContent = photo.description;
-  renderComments(photo.comments);
+
+  currentComments = photo.comments;
+  resetComments();
+  renderComments(currentComments, renderedCommentsAmount);
 
   document.addEventListener('keydown', onDocumentKeyDown);
-
-  commentsLoadButton.addEventListener('click', () => {
-    console.log('clicked more');
-    renderComments(photo.comments);
-  });
 };
 
 function closeFullSizePhoto() {
   bodyContainer.classList.remove('modal-open');
   fullSizePhotoContainer.classList.add('hidden');
 
-  document.removeEventListener('keydown', onDocumentKeyDown);
+  renderedCommentsAmount = COMMENTS_LOAD_STEP;
 
-  resetRenderedCommentsAmount();
+  document.removeEventListener('keydown', onDocumentKeyDown);
 }
+
+commentsLoadButton.addEventListener('click', () => {
+  renderedCommentsAmount += COMMENTS_LOAD_STEP;
+  resetComments();
+  renderComments(currentComments, renderedCommentsAmount);
+});
 
 closeButton.addEventListener('click', () =>{
   closeFullSizePhoto();
