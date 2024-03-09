@@ -28,7 +28,7 @@ const renderThumbnails = (photos) => {
 const setThumbnailsListener = (photos) => {
   pictureContainer.addEventListener('click', (evt) => {
     const clickedThumbnail = evt.target.closest('[data-thumbnail-id]');
-    if(!clickedThumbnail) {
+    if (!clickedThumbnail) {
       return;
     }
     const clickedThumbnailId = clickedThumbnail.dataset.thumbnailId;
