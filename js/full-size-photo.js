@@ -18,7 +18,7 @@ let renderedCommentsAmount = COMMENTS_LOAD_STEP;
 let currentComments = [];
 
 const onDocumentKeyDown = (evt) => {
-  if(isEscapeKey(evt)) {
+  if (isEscapeKey(evt)) {
     closeFullSizePhoto();
   }
 };
@@ -55,7 +55,7 @@ commentsLoadButton.addEventListener('click', () => {
   renderComments(currentComments, renderedCommentsAmount);
 });
 
-closeButton.addEventListener('click', () =>{
+closeButton.addEventListener('click', () => {
   closeFullSizePhoto();
 });
 
