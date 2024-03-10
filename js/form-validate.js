@@ -1,4 +1,6 @@
 import {isEscapeKey} from './util.js';
+import {resetScale} from './scale.js';
+import {resetEffects} from './effects.js';
 
 const MAX_TAG_AMOUNT = 5;
 const TAG_EXPRESSION = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -70,6 +72,9 @@ const resetForm = () => {
 const openModal = () => {
   bodyContainer.classList.add('modal-open');
   form.classList.remove('hidden');
+
+  resetScale();
+  resetEffects();
 
   document.addEventListener('keydown', onDocumentKeyDown);
 };
