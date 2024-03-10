@@ -1,4 +1,9 @@
 import {isEscapeKey} from './util.js';
+import {resetScale} from './scale.js';
+import {resetEffects} from './effects.js';
+
+const MAX_TAG_AMOUNT = 5;
+const TAG_EXPRESSION = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const bodyContainer = document.body;
 const form = document.querySelector('.img-upload__overlay');
@@ -7,8 +12,6 @@ const fileInput = document.querySelector('#upload-file');
 const tagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 
-const MAX_TAG_AMOUNT = 5;
-const tagExpression = /^#[a-zа-яё0-9]{1,19}$/i;
 let tagErrorString = '';
 
 const pristine = new Pristine(form, {
@@ -17,16 +20,7 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper__error'
 });
 
-const getTags = () => {
-  const tags = [];
-  const tagsWithSpaces = tagField.value.toLowerCase().split(' ');
-  tagsWithSpaces.forEach((tag) => {
-    if (tag) {
-      tags.push(tag);
-    }
-  });
-  return tags;
-};
+const getTags = () => tagField.value.toLowerCase().split(' ').filter((tag) => tag);
 
 const getUniqueTags = (tags) => Array.from(new Set(tags));
 
@@ -47,7 +41,7 @@ const isValidAmount = (tags) => {
 };
 
 const isValidTag = (tag) => {
-  const isValid = tagExpression.test(tag);
+  const isValid = TAG_EXPRESSION.test(tag);
   if (!isValid) {
     tagErrorString = `Хештег ${tag} некорректный!`;
   }
@@ -79,6 +73,9 @@ const openModal = () => {
   bodyContainer.classList.add('modal-open');
   form.classList.remove('hidden');
 
+  resetScale();
+  resetEffects();
+
   document.addEventListener('keydown', onDocumentKeyDown);
 };
 
@@ -104,6 +101,12 @@ const onFormSubmit = (evt) => {
   pristine.validate();
 };
 
-fileInput.addEventListener('change', openModal);
-cancelButton.addEventListener('click', closeModal);
+fileInput.addEventListener('change', () => {
+  openModal();
+});
+
+cancelButton.addEventListener('click', ()=> {
+  closeModal();
+});
+
 form.addEventListener('submit', onFormSubmit);
