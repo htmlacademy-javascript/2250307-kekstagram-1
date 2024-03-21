@@ -1,16 +1,23 @@
 import {isEscapeKey} from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffects} from './effects.js';
+import {postData} from './api.js';
+import {showMessage} from './messages.js';
 
 const MAX_TAG_AMOUNT = 5;
 const TAG_EXPRESSION = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const bodyContainer = document.body;
-const form = document.querySelector('.img-upload__overlay');
+const form = document.querySelector('.img-upload__form');
+const formOverlay = document.querySelector('.img-upload__overlay');
+const submitButton = document.querySelector('.img-upload__submit');
 const cancelButton = document.querySelector('#upload-cancel');
 const fileInput = document.querySelector('#upload-file');
 const tagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
+
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
 let tagErrorString = '';
 
@@ -71,42 +78,72 @@ const resetForm = () => {
 
 const openModal = () => {
   bodyContainer.classList.add('modal-open');
-  form.classList.remove('hidden');
+  formOverlay.classList.remove('hidden');
 
   resetScale();
   resetEffects();
 
-  document.addEventListener('keydown', onDocumentKeyDown);
+  document.addEventListener('keydown', onDocumentKeyDownForm);
 };
 
 const closeModal = () => {
   bodyContainer.classList.remove('modal-open');
-  form.classList.add('hidden');
+  formOverlay.classList.add('hidden');
 
   resetForm();
 
-  document.removeEventListener('keydown', onDocumentKeyDown);
+  document.removeEventListener('keydown', onDocumentKeyDownForm);
 };
 
 const isFieldFocused = () => document.activeElement === tagField || document.activeElement === commentField;
 
-function onDocumentKeyDown (evt) {
+function onDocumentKeyDownForm (evt) {
   if (isEscapeKey(evt) && !isFieldFocused()) {
     closeModal();
   }
 }
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+const enableSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const disableSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправка...';
+};
+
+const setFormSubmit = () => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+      disableSubmitButton();
+
+      postData(formData)
+        .then(() => {
+          closeModal();
+          showMessage(successTemplate, bodyContainer);
+        })
+        .catch(() => {
+          showMessage(errorTemplate, bodyContainer);
+          document.removeEventListener('keydown', onDocumentKeyDownForm);
+        })
+        .finally(enableSubmitButton);
+    }
+  });
 };
 
 fileInput.addEventListener('change', () => {
   openModal();
 });
 
-cancelButton.addEventListener('click', ()=> {
+cancelButton.addEventListener('click', () => {
   closeModal();
 });
 
-form.addEventListener('submit', onFormSubmit);
+setFormSubmit(closeModal);
+
+export {onDocumentKeyDownForm};
