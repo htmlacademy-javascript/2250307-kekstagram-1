@@ -1,3 +1,5 @@
+const MESSAGE_SHOW_TIME = 5000;
+
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -36,4 +38,24 @@ function createRandomUniqueIdGenerator(min, max) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomArrayElement, createIdGenerator, createRandomUniqueIdGenerator, isEscapeKey};
+const showErrorMessage = (message) => {
+  const messageContainer = document.createElement('div');
+  messageContainer.style.zIndex = '100';
+  messageContainer.style.position = 'absolute';
+  messageContainer.style.left = '0';
+  messageContainer.style.right = '0';
+  messageContainer.style.top = '0';
+  messageContainer.style.padding = '15px';
+  messageContainer.style.backgroundColor = '#ff4d4d';
+  messageContainer.style.fontSize = '15px';
+  messageContainer.style.textAlign = 'center';
+
+  messageContainer.textContent = message;
+  document.body.append(messageContainer);
+
+  setTimeout(() => {
+    messageContainer.remove();
+  }, MESSAGE_SHOW_TIME);
+};
+
+export {getRandomInteger, getRandomArrayElement, createIdGenerator, createRandomUniqueIdGenerator, isEscapeKey, showErrorMessage};

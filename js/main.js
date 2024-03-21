@@ -1,10 +1,14 @@
 import './functions.js';
-import {createPhotos} from './data.js';
 import {renderThumbnails, setThumbnailsListener} from './thumbnails.js';
 import './form-validate.js';
+import {getData} from './api.js';
+import {showErrorMessage} from './util.js';
 
-const photos = createPhotos();
-
-renderThumbnails(photos);
-
-setThumbnailsListener(photos);
+getData()
+  .then((photos) => {
+    renderThumbnails(photos);
+    setThumbnailsListener(photos);
+  })
+  .catch((error) => {
+    showErrorMessage(error.message);
+  });
