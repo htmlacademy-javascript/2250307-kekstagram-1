@@ -1,4 +1,4 @@
-const DEFAULT_DIRECTORY = 'https://28.javascript.htmlacademy.pro/kekstagram';
+const BASE_URL = 'https://28.javascript.htmlacademy.pro/kekstagram';
 
 const Path = {
   GET_DATA: '/data',
@@ -16,7 +16,7 @@ const ErrorMessage = {
 };
 
 const loadData = (path, method, body, errorMessage) =>
-  fetch(`${DEFAULT_DIRECTORY}${path}`, {method, body})
+  fetch(`${BASE_URL}${path}`, {method, body})
     .then((response) => {
       if (!response.ok) {
         throw new Error();
