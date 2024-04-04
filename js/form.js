@@ -2,12 +2,11 @@ import {isEscapeKey} from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffects} from './effects.js';
 import {postData} from './api.js';
-import {showMessage} from './messages.js';
+import {showMessage, isMessageShown} from './messages.js';
 
 const MAX_TAG_AMOUNT = 5;
 const TAG_EXPRESSION = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const bodyContainer = document.body;
 const form = document.querySelector('.img-upload__form');
 const formOverlay = document.querySelector('.img-upload__overlay');
 const submitButton = document.querySelector('.img-upload__submit');
@@ -15,9 +14,6 @@ const cancelButton = document.querySelector('#upload-cancel');
 const fileInput = document.querySelector('#upload-file');
 const tagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
-
-const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
 let tagErrorString = '';
 
@@ -77,28 +73,28 @@ const resetForm = () => {
 };
 
 const openModal = () => {
-  bodyContainer.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   formOverlay.classList.remove('hidden');
 
   resetScale();
   resetEffects();
 
-  document.addEventListener('keydown', onDocumentKeyDownForm);
+  document.addEventListener('keydown', onDocumentKeyDown);
 };
 
 const closeModal = () => {
-  bodyContainer.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   formOverlay.classList.add('hidden');
 
   resetForm();
 
-  document.removeEventListener('keydown', onDocumentKeyDownForm);
+  document.removeEventListener('keydown', onDocumentKeyDown);
 };
 
 const isFieldFocused = () => document.activeElement === tagField || document.activeElement === commentField;
 
-function onDocumentKeyDownForm (evt) {
-  if (isEscapeKey(evt) && !isFieldFocused()) {
+function onDocumentKeyDown (evt) {
+  if (isEscapeKey(evt) && !isFieldFocused() && !isMessageShown()) {
     closeModal();
   }
 }
@@ -125,11 +121,10 @@ const setFormSubmit = () => {
       postData(formData)
         .then(() => {
           closeModal();
-          showMessage(successTemplate, bodyContainer);
+          showMessage('success');
         })
         .catch(() => {
-          showMessage(errorTemplate, bodyContainer);
-          document.removeEventListener('keydown', onDocumentKeyDownForm);
+          showMessage('error');
         })
         .finally(enableSubmitButton);
     }
@@ -145,5 +140,3 @@ cancelButton.addEventListener('click', () => {
 });
 
 setFormSubmit(closeModal);
-
-export {onDocumentKeyDownForm};
