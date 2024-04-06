@@ -1,21 +1,32 @@
 import {isEscapeKey} from './util.js';
-import {onDocumentKeyDownForm} from './form.js';
+
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
 let messageElement;
 
+const isMessageShown = () => Boolean(messageElement);
+
+const getMessageTemplate = (message) => {
+  if (message === 'success') {
+    return successTemplate;
+  }
+
+  return errorTemplate;
+};
+
 const hideMessage = () => {
   messageElement.remove();
-
-  document.addEventListener('keydown', onDocumentKeyDownForm);
+  messageElement = null;
 
   document.removeEventListener('keydown', onDocumentKeyDown);
   document.removeEventListener('click', onDocumentClick);
 };
 
-const showMessage = (template, body) => {
-  messageElement = template.cloneNode(true);
+const showMessage = (message) => {
+  messageElement = getMessageTemplate(message).cloneNode(true);
   const closeButton = messageElement.querySelector('button');
-  body.appendChild(messageElement);
+  document.body.appendChild(messageElement);
 
   document.addEventListener('keydown', onDocumentKeyDown);
   document.addEventListener('click', onDocumentClick);
@@ -37,4 +48,4 @@ function onDocumentClick (evt) {
   }
 }
 
-export {showMessage};
+export {showMessage, isMessageShown};
