@@ -22,4 +22,13 @@ const showErrorMessage = (message) => {
   }, MESSAGE_SHOW_TIME);
 };
 
-export {isEscapeKey, showErrorMessage};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {isEscapeKey, showErrorMessage, debounce};

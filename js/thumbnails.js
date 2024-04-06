@@ -3,7 +3,15 @@ import {openFullSizePhoto} from './full-size-photo.js';
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
 
+const clearThumbnails = () => {
+  const pictures = pictureContainer.querySelectorAll('.picture');
+  pictures.forEach((picture) => {
+    picture.remove();
+  });
+};
+
 const renderThumbnails = (photos) => {
+  clearThumbnails();
   const fragment = document.createDocumentFragment();
 
   photos.forEach(({id, url, description, likes, comments}) => {
