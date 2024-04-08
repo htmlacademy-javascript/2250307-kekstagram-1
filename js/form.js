@@ -66,10 +66,8 @@ pristine.addValidator(
 );
 
 const resetForm = () => {
-  fileInput.value = '';
-  tagField.value = '';
-  commentField.value = '';
-  pristine.validate();
+  form.reset();
+  pristine.reset();
 };
 
 const openModal = () => {
