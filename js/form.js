@@ -11,7 +11,6 @@ const form = document.querySelector('.img-upload__form');
 const formOverlay = document.querySelector('.img-upload__overlay');
 const submitButton = document.querySelector('.img-upload__submit');
 const cancelButton = document.querySelector('#upload-cancel');
-const fileInput = document.querySelector('#upload-file');
 const tagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 
@@ -129,12 +128,10 @@ const setFormSubmit = () => {
   });
 };
 
-fileInput.addEventListener('change', () => {
-  openModal();
-});
-
 cancelButton.addEventListener('click', () => {
   closeModal();
 });
 
 setFormSubmit(closeModal);
+
+export {openModal};

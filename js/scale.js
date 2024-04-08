@@ -13,7 +13,7 @@ const ScaleRange = {
 
 const resetScale = () => {
   scaleInput.value = '100%';
-  imagePreviewContent.style.scale = 1;
+  imagePreviewContent.style.transform = 'scale(1)';
 };
 
 const changeScale = (scaleNumber) => {
