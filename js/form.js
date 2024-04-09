@@ -11,7 +11,6 @@ const form = document.querySelector('.img-upload__form');
 const formOverlay = document.querySelector('.img-upload__overlay');
 const submitButton = document.querySelector('.img-upload__submit');
 const cancelButton = document.querySelector('#upload-cancel');
-const fileInput = document.querySelector('#upload-file');
 const tagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 
@@ -66,10 +65,8 @@ pristine.addValidator(
 );
 
 const resetForm = () => {
-  fileInput.value = '';
-  tagField.value = '';
-  commentField.value = '';
-  pristine.validate();
+  form.reset();
+  pristine.reset();
 };
 
 const openModal = () => {
@@ -131,12 +128,10 @@ const setFormSubmit = () => {
   });
 };
 
-fileInput.addEventListener('change', () => {
-  openModal();
-});
-
 cancelButton.addEventListener('click', () => {
   closeModal();
 });
 
 setFormSubmit(closeModal);
+
+export {openModal};

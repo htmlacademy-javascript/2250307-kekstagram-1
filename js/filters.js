@@ -1,7 +1,7 @@
+const RANDOM_FILTER_AMOUNT = 10;
+
 const filterContainer = document.querySelector('.img-filters');
 const filterButtons = filterContainer.querySelectorAll('button');
-
-const RANDOM_FILTER_AMOUNT = 10;
 
 let currentFilter = '';
 let pictures = [];

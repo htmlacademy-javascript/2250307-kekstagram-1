@@ -2,7 +2,7 @@ import {showErrorMessage, debounce} from './util.js';
 import {getData} from './api.js';
 import {renderThumbnails, setThumbnailsListener} from './thumbnails.js';
 import {initializePhotos, applyFilter} from './filters.js';
-import './form.js';
+import './upload-file.js';
 
 const TIMEOUT_DELAY = 500;
 
