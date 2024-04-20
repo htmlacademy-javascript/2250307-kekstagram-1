@@ -4,6 +4,7 @@ const FILE_TYPES = ['png', 'jpeg', 'jpg'];
 
 const fileInput = document.querySelector('#upload-file');
 const imagePreview = document.querySelector('.img-upload__preview').querySelector('img');
+const effectsPreviews = document.querySelectorAll('.effects__preview');
 
 fileInput.addEventListener('change', () => {
   const file = fileInput.files[0];
@@ -12,7 +13,13 @@ fileInput.addEventListener('change', () => {
   const isValid = FILE_TYPES.some((type) => fileName.endsWith(type));
 
   if (isValid) {
-    imagePreview.src = URL.createObjectURL(file);
+    const urlObject = URL.createObjectURL(file);
+
+    imagePreview.src = urlObject;
+
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url(${urlObject})`;
+    });
   }
 
   openModal();
