@@ -3,9 +3,9 @@ import {isEscapeKey} from './util.js';
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
-let messageElement;
+let messageModal;
 
-const isMessageShown = () => Boolean(messageElement);
+const isMessageShown = () => Boolean(messageModal);
 
 const getMessageTemplate = (message) => {
   if (message === 'success') {
@@ -16,17 +16,17 @@ const getMessageTemplate = (message) => {
 };
 
 const hideMessage = () => {
-  messageElement.remove();
-  messageElement = null;
+  messageModal.remove();
+  messageModal = null;
 
   document.removeEventListener('keydown', onDocumentKeyDown);
   document.removeEventListener('click', onDocumentClick);
 };
 
 const showMessage = (message) => {
-  messageElement = getMessageTemplate(message).cloneNode(true);
-  const closeButton = messageElement.querySelector('button');
-  document.body.appendChild(messageElement);
+  messageModal = getMessageTemplate(message).cloneNode(true);
+  const closeButton = messageModal.querySelector('button');
+  document.body.appendChild(messageModal);
 
   document.addEventListener('keydown', onDocumentKeyDown);
   document.addEventListener('click', onDocumentClick);
@@ -43,7 +43,7 @@ function onDocumentKeyDown (evt) {
 }
 
 function onDocumentClick (evt) {
-  if (evt.target.classList.contains(messageElement.classList)) {
+  if (evt.target.classList.contains(messageModal.classList)) {
     hideMessage();
   }
 }
